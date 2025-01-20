@@ -57,6 +57,16 @@ def ms_gate_with_modulation(phi, duration, amplitude):
     qc.append(RXXGate(phi), [0, 1])
     return qc
 
+symmetry_optimized_circuit = ms_gate_with_modulation(phi, duration, amplitude)
+
+# Simulate the circuit
+simulator = Aer.get_backend('qasm_simulator')
+result = execute(symmetry_optimized_circuit, simulator, shots=1024).result()
+counts = result.get_counts()
+
+# Display results
+plot_histogram(counts, title="Symmetry-Optimized MS Gate")
+
 """**Symmetry Error-Robust Waveform Design
 The symmetry error-robust waveform design eliminates symmetric and displacement-dependent asymmetric errors by symmetrically modulating the laser pulses used to implement the MS gate. This ensures that:
 averages to zero, decoupling spin and motional degrees of freedom.
